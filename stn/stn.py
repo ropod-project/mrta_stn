@@ -2,6 +2,8 @@ import json
 import logging.config
 import sys
 from json import JSONEncoder
+
+from stn.exceptions.stp import NodeNotFound
 from stn.utils.uuid import generate_uuid
 
 import networkx as nx
@@ -495,6 +497,8 @@ class STN(nx.DiGraph):
                 else:  # upper bound
                     _time = self[0][i]['weight']
 
+        if _time is None:
+            raise NodeNotFound
         return _time
 
     def get_node_earliest_time(self, node_id):
