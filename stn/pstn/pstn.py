@@ -28,6 +28,7 @@ from json import JSONEncoder
 from stn.pstn.constraint import Constraint
 from stn.stn import STN
 from stn.task import Timepoint
+from stn.stn import MAX_FLOAT
 
 
 class MyEncoder(JSONEncoder):
@@ -71,7 +72,7 @@ class PSTN(STN):
 
         return to_print
 
-    def add_constraint(self, i, j, wji=0.0, wij=float('inf'), distribution=""):
+    def add_constraint(self, i, j, wji=0.0, wij=MAX_FLOAT, distribution=""):
         """
         Adds constraint between nodes i and j
         i: starting node
@@ -86,7 +87,7 @@ class PSTN(STN):
         -wji is the lower bound (minimum allocated time between i and j)
          wij is the upper bound (maximum allocated time between i and j)
 
-        If there is no upper bound, its value is set to infinity
+        If there is no upper bound, its value is set to infinity (MAX_FLOAT)
 
         distribution is the probability distribution of the constraint between i and j
         """
@@ -159,11 +160,11 @@ class PSTN(STN):
     @staticmethod
     def get_prev_timepoint(timepoint_name, next_timepoint, edge_in_between):
         r_earliest_time = 0
-        r_latest_time = float('inf')
+        r_latest_time = MAX_FLOAT
         return Timepoint(timepoint_name, r_earliest_time, r_latest_time)
 
     @staticmethod
     def get_next_timepoint(timepoint_name, prev_timepoint, edge_in_between):
         r_earliest_time = 0
-        r_latest_time = float('inf')
+        r_latest_time = MAX_FLOAT
         return Timepoint(timepoint_name, r_earliest_time, r_latest_time)
