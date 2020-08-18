@@ -95,7 +95,7 @@ class STN(nx.DiGraph):
     def is_empty(self):
         return nx.is_empty(self)
 
-    def add_constraint(self, i, j, wji=0.0, wij=float('inf')):
+    def add_constraint(self, i, j, wji=0.0, wij=MAX_FLOAT):
         """
         Adds constraint between nodes i and j
         i: starting node
@@ -110,7 +110,7 @@ class STN(nx.DiGraph):
         -wji is the lower bound (minimum allocated time between i and j)
          wij is the upper bound (maximum allocated time between i and j)
 
-        The default upper and lower bounds are 0 and infinity
+        The default upper and lower bounds are 0 and infinity (MAX_FLOAT)
         """
         # Minimum allocated time between i and j
         min_time = -wji
@@ -387,15 +387,8 @@ class STN(nx.DiGraph):
         :param i: starting_node_id
         :parma ending_node: ending_node_id
         """
-        if weight == "inf":
-            weight = float('inf')
-        else:
-            weight = round(float(weight), 2)
-
         if self.has_edge(i, j):
-
-            if self[i][j]['weight'] == 'inf':
-                self[i][j]['weight'] = float('inf')
+            weight = round(float(weight), 2)
 
             if weight < self[i][j]['weight']:
                 self[i][j]['weight'] = weight
@@ -409,7 +402,7 @@ class STN(nx.DiGraph):
         in node_id
         Args:
             allotted_time (float): seconds after zero timepoint
-            node_id (inf): idx of the timepoint in the stn
+            node_id (int): idx of the timepoint in the stn
 
         """
         self.update_edge_weight(0, node_id, allotted_time, force)
@@ -433,7 +426,7 @@ class STN(nx.DiGraph):
             if i == j and self.has_node(i):
                 return 0
             else:
-                return float('inf')
+                return MAX_FLOAT
 
     def compute_temporal_metric(self, temporal_criterion):
         if temporal_criterion == 'completion_time':

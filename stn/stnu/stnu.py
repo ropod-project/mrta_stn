@@ -2,6 +2,7 @@ from stn.stn import STN
 from json import JSONEncoder
 import logging
 from stn.task import Timepoint
+from stn.stn import MAX_FLOAT
 
 
 class MyEncoder(JSONEncoder):
@@ -45,7 +46,7 @@ class STNU(STN):
 
         return to_print
 
-    def add_constraint(self, i, j, wji=0.0, wij=float('inf'), is_contingent=False):
+    def add_constraint(self, i, j, wji=0.0, wij=MAX_FLOAT, is_contingent=False):
         """
         Adds constraint between nodes i and j
         i: starting node
@@ -60,7 +61,7 @@ class STNU(STN):
         -wji is the lower bound (minimum allocated time between i and j)
          wij is the upper bound (maximum allocated time between i and j)
 
-        If there is no upper bound, its value is set to infinity
+        If there is no upper bound, its value is set to infinity (MAX_FLOAT)
 
         Types of constraints:
         - contingent constraint
